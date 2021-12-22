@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19461" systemVersion="20G165" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Group" representedClassName=".Group" syncable="YES">
+        <attribute name="backgroundColor" attributeType="Transformable"/>
+        <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="name" attributeType="String"/>
+        <relationship name="backlogTasks" toMany="YES" deletionRule="Nullify" destinationEntity="Task" inverseName="backlogTaskFromGroup" inverseEntity="Task"/>
+        <relationship name="completedTasks" toMany="YES" deletionRule="Nullify" destinationEntity="Task" inverseName="completedTasksFromGroup" inverseEntity="Task"/>
+        <relationship name="dueTasks" toMany="YES" deletionRule="Nullify" destinationEntity="Task" inverseName="dueTasksFromGroup" inverseEntity="Task"/>
+    </entity>
+    <entity name="Tag" representedClassName=".Tag" syncable="YES">
+        <attribute name="color" attributeType="Transformable"/>
+        <attribute name="name" attributeType="String"/>
+        <relationship name="tagFromTask" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Task" inverseName="tags" inverseEntity="Task"/>
+    </entity>
+    <entity name="Task" representedClassName=".Task" syncable="YES">
+        <attribute name="context" attributeType="String"/>
+        <attribute name="creationDate" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="dueDate" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="priority" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="state" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="title" attributeType="String"/>
+        <relationship name="backlogTaskFromGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Group" inverseName="backlogTasks" inverseEntity="Group"/>
+        <relationship name="completedTasksFromGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Group" inverseName="completedTasks" inverseEntity="Group"/>
+        <relationship name="dueTasksFromGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Group" inverseName="dueTasks" inverseEntity="Group"/>
+        <relationship name="tags" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="tagFromTask" inverseEntity="Tag"/>
+    </entity>
+    <elements>
+        <element name="Group" positionX="192.2305908203125" positionY="-30.68539428710938" width="128" height="119"/>
+        <element name="Tag" positionX="-327.1309204101562" positionY="10.62606811523438" width="125.6427612304688" height="88"/>
+        <element name="Task" positionX="-134.7388916015625" positionY="-88.05615234375" width="128" height="193"/>
+    </elements>
+</model>

@@ -1,0 +1,16 @@
+PODS:
+  - TagListView (1.4.1)
+
+DEPENDENCIES:
+  - TagListView (~> 1.0)
+
+SPEC REPOS:
+  trunk:
+    - TagListView
+
+SPEC CHECKSUMS:
+  TagListView: a1c236d17960a0cf64156725a76ce6d73ebce2be
+
+PODFILE CHECKSUM: 4e600b07b277238c506ef7f823ae6ec806680281
+
+COCOAPODS: 1.11.2
