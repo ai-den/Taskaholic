@@ -28,7 +28,7 @@ class NewTaskTableViewController: UITableViewController {
 
     @IBOutlet weak var tagListView: TagListView!
     @IBOutlet weak var tagCell: UITableViewCell!
-    @IBOutlet weak var titleLabel: UITextField!
+    @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var dateCell: UITableViewCell!
     @IBOutlet weak var dateLabel: UILabel!
@@ -39,12 +39,14 @@ class NewTaskTableViewController: UITableViewController {
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var timePicker: UIDatePicker!
     @IBOutlet weak var addTagButton: UIButton!
+    @IBOutlet weak var priorityCell: UITableViewCell!
+    @IBOutlet weak var priorityLabel: UILabel!
     
     let priorityNotification = Notification.Name(rawValue: priorityNotificationKey)
 
     var delegate: NewTaskDelegate!
     var dueDate: Date!
-    var priority: Priority?
+    var priority: Priority!
     var isDateHidden: Bool = true
     var isTimeHidden: Bool = true
     var isFromDue: Bool = false
@@ -60,7 +62,7 @@ class NewTaskTableViewController: UITableViewController {
         self.isModalInPresentation = true
         print("NewTaskView viewDidLoad()")
         if let task = task {
-            titleLabel.text = task.title!
+            titleTextField.text = task.title!
             descriptionTextView.text = task.context!
             dueDate = task.dueDate
             dateLabel.text = dueDate.getDateString(with: K.dateFomats.MMMdyyyyWithComma)
@@ -69,22 +71,38 @@ class NewTaskTableViewController: UITableViewController {
                 tagListView.addTag(tag.name!)
             }
             
+            priority = task.getPriority()
+            print("Priority is not nil anymore.")
+            print("value: \(priority.toString())")
+            
             if task.dueTasksFromGroup != nil {
                 isFromDue = true
+                titleTextField.isUserInteractionEnabled = false
+                descriptionTextView.isUserInteractionEnabled = false
+                addTagButton.heightAnchor.constraint(equalToConstant: 0).isActive = true
+                addTagButton.isHidden = true
+                //tableView.layoutIfNeeded()
+                tagListView.removeButtonIconSize = 0
+                tagListView.removeIconLineWidth = 0
+                dateCell.isUserInteractionEnabled = false
+                timeCell.isUserInteractionEnabled = false
+                priorityCell.isUserInteractionEnabled = false
+                
             }
         } else {
+            print("Priority becomes NONE.")
             dueDate = Date()
+            priority = Priority.none
         }
         
-        // Local variables config
-        priority = Priority.none
-        
+        priorityLabel.text = priority.toString()
+
         // TextView placeholder
         descriptionTextView.placeholder = "Text Description"
         
         // Tag list config
         tagListView.delegate = self
-        tagListView.textFont = UIFont.systemFont(ofSize: 24)
+        tagListView.textFont = UIFont.systemFont(ofSize: 20)
         tagListView.tagBackgroundColor = tagColor
         if tagListView.tagViews.isEmpty {
             //tagListView.heightAnchor.constraint(equalToConstant: 0).isActive = true
@@ -93,7 +111,7 @@ class NewTaskTableViewController: UITableViewController {
         
         // Tag cell config
         addTagButton.titleLabel?.font = UIFont(name: K.fonts.sfproRounded_SemiBold, size: 15)
-        addTagButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
+        addTagButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 20)
         
         // Date & Time config
         datePicker.date = dueDate
@@ -115,7 +133,7 @@ class NewTaskTableViewController: UITableViewController {
     }
     
     @IBAction func doneClicked(_ sender: Any) {
-        let title = titleLabel.text!
+        let title = titleTextField.text!
         let taskDescription = descriptionTextView.text!
         let priority = priority!
         let dueDate = dueDate
@@ -128,7 +146,7 @@ class NewTaskTableViewController: UITableViewController {
         print("New Task State: \(state.rawValue)")
         print("New Task dueDate: \(dueDate!.getDateString(with: K.dateFomats.MMMMdyyyyWithComma))")
         
-        if !titleLabel.text!.isEmpty  {
+        if !titleTextField.text!.isEmpty  {
             if let task = task {
                 delegate.didUpdatetask(title: title, description: taskDescription, priority: priority, state: state, labels: labels, dueDate: dueDate!, justFor: task)
 
@@ -237,11 +255,11 @@ extension NewTaskTableViewController {
         let row = indexPath.row
         
         // Priority Seletion
-        if section == 3 {
-            print("Priority selected")
-            performSegue(withIdentifier: "toPriorityScene", sender: nil)
-        } else if section == 2 {
-            if !isFromDue {
+        if !isFromDue {
+            if section == 3 {
+                print("Priority selected")
+                performSegue(withIdentifier: "toPriorityScene", sender: nil)
+            } else if section == 2 {
                 if row == 0 {
                     tableView.performBatchUpdates ({
                         self.isDateHidden = !isDateHidden
@@ -253,11 +271,11 @@ extension NewTaskTableViewController {
                         self.timeCell.isHidden = isTimeHidden
                     }, completion: nil)
                 }
+            } else if section == 1 {
+                addTagClicked(self)
             }
-            
-        } else if section == 1 {
-            addTagClicked(self)
         }
+        
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -275,6 +293,8 @@ extension NewTaskTableViewController {
             } else {
                 parentBackgroundView.roundBottomCorners(radius: 0)
             }
+        } else if section == 3 && row == 0 {
+            return 50
         }
         return UITableView.automaticDimension
         //return super.tableView(tableView, heightForRowAt: indexPath)

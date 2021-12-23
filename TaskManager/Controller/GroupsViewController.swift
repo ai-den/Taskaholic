@@ -50,6 +50,16 @@ class GroupsViewController: UIViewController {
         }
     }
     
+    func saveGroups() {
+        do {
+            try context.save()
+            tableView.reloadData()
+        } catch {
+            print("Error saving groups")
+            print(error.localizedDescription)
+        }
+    }
+    
     func loadGroups() {
         let request: NSFetchRequest<Group> = Group.fetchRequest()
         do {
@@ -90,6 +100,17 @@ extension GroupsViewController: UITableViewDataSource {
         groupCell.addGestureRecognizer(longPressRecognizer)
 
         return groupCell
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let groupToRemove = groups[indexPath.row]
+            context.delete(groupToRemove)
+            groups.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .left)
+            saveGroups()
+            loadGroups()
+        }
     }
 }
 

@@ -13,6 +13,7 @@ class TasksViewController: UIViewController {
 
     @IBOutlet weak var taskTableView: UITableView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var addItem: UIBarButtonItem!
     
     let checkedImage = UIImage(systemName: "checkmark.circle.fill")!
     let uncheckedImage = UIImage(systemName: "circle")!
@@ -37,8 +38,11 @@ class TasksViewController: UIViewController {
         segmentedControl.selectedSegmentIndex = 1
         
         navigationItem.title = group.name
+        navigationController?.navigationBar.tintColor = group.backgroundColor as! UIColor
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor : group.backgroundColor as! UIColor,
             NSAttributedString.Key.font: UIFont(name: K.fonts.sfproRounded_Medium, size: 32)!]
+
+        addItem.tintColor = group.backgroundColor as! UIColor
 
         taskTableView.delegate = self
         taskTableView.dataSource = self
@@ -96,16 +100,30 @@ extension TasksViewController: UITableViewDelegate {
         selectedTask = currentTasks[indexPath.row]
         performSegue(withIdentifier: K.segues.toUpdateTaskScene, sender: self)
     }
+//
+//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .delete {
+//            let taskToRemove = currentTasks[indexPath.row]
+//            context.delete(taskToRemove)
+//            currentTasks.remove(at: indexPath.row)
+//            tableView.deleteRows(at: [indexPath], with: .left)
+//            saveTasks()
+//            loadTasks()
+//        }
+//    }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            let taskToRemove = currentTasks[indexPath.row]
-            context.delete(taskToRemove)
-            currentTasks.remove(at: indexPath.row)
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) { action, view, completionHandler in
+            let taskToRemove = self.currentTasks[indexPath.row]
+            self.context.delete(taskToRemove)
+            self.currentTasks.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .left)
-            saveTasks()
-            loadTasks()
+            completionHandler(true)
+            self.saveTasks()
+            self.loadTasks()
         }
+        deleteAction.image = UIImage(systemName: "trash")
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 }
 

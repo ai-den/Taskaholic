@@ -95,6 +95,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="addItem" destination="z2K-qK-fGm" id="DUc-gn-Cvt"/>
                         <outlet property="segmentedControl" destination="OUd-lL-KCa" id="Jp6-5H-dlt"/>
                         <outlet property="taskTableView" destination="V6j-9z-XRP" id="2Xj-Rn-sQi"/>
                         <segue destination="bQd-Sf-lCi" kind="presentation" identifier="toUpdateTaskScene" id="SZf-BZ-9Y5"/>
@@ -278,7 +279,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
-                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                    <color key="backgroundColor" name="InsetCellBackground"/>
                                                     <constraints>
                                                         <constraint firstItem="Esh-yh-nZb" firstAttribute="top" secondItem="bem-Yw-pFP" secondAttribute="top" constant="10" id="8el-iM-9f2"/>
                                                         <constraint firstItem="1fK-DO-uJ0" firstAttribute="centerY" secondItem="bem-Yw-pFP" secondAttribute="centerY" id="LPK-a2-pqr"/>
@@ -386,7 +387,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
                                             </subviews>
-                                            <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                                            <color key="backgroundColor" name="tableViewBackground"/>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="KgN-CE-iWG" secondAttribute="bottom" id="4jI-mV-lDS"/>
                                                 <constraint firstItem="KgN-CE-iWG" firstAttribute="leading" secondItem="gsA-m0-Lik" secondAttribute="leading" id="DYo-Kb-a7t"/>
@@ -427,18 +428,18 @@
                                         <rect key="frame" x="20" y="862.5" width="374" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lHt-93-LJj" id="gDu-M9-tg9">
-                                            <rect key="frame" x="0.0" y="0.0" width="345.5" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="357.5" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Priority" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nL5-bU-ZNc">
-                                                    <rect key="frame" x="20" y="15" width="54.5" height="20.5"/>
+                                                    <rect key="frame" x="8" y="15" width="54.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="eEs-sU-4zd">
-                                                    <rect key="frame" x="296.5" y="15" width="41" height="20.5"/>
+                                                    <rect key="frame" x="308.5" y="15" width="41" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" systemColor="systemOrangeColor"/>
@@ -478,12 +479,14 @@
                         <outlet property="descriptionTextView" destination="7X0-1g-7Xp" id="WBX-ma-z0K"/>
                         <outlet property="parentBackgroundView" destination="KgN-CE-iWG" id="HUr-fC-jen"/>
                         <outlet property="parentTimeCell" destination="5sJ-OX-C4F" id="j4E-yj-rNL"/>
+                        <outlet property="priorityCell" destination="lHt-93-LJj" id="vcW-lo-iz6"/>
+                        <outlet property="priorityLabel" destination="eEs-sU-4zd" id="0oQ-ef-gix"/>
                         <outlet property="tagCell" destination="nHy-3C-oLZ" id="Dc2-60-ube"/>
                         <outlet property="tagListView" destination="6Nw-dr-aHR" id="coP-Wd-Kgw"/>
                         <outlet property="timeCell" destination="FuY-Xx-IHx" id="6h0-2V-27M"/>
                         <outlet property="timeLabel" destination="eAI-5t-K26" id="7A1-IG-LjD"/>
                         <outlet property="timePicker" destination="AFZ-0D-cBa" id="9q6-0A-dT7"/>
-                        <outlet property="titleLabel" destination="sbF-Uz-9RN" id="gpb-GK-U6a"/>
+                        <outlet property="titleTextField" destination="sbF-Uz-9RN" id="gpb-GK-U6a"/>
                         <segue destination="i7S-KV-Hwk" kind="show" identifier="toPriorityScene" id="QUB-nj-bZa"/>
                     </connections>
                 </tableViewController>
@@ -522,11 +525,11 @@
                                         <rect key="frame" x="20" y="61.5" width="374" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tpn-Df-PrH" id="eID-6S-hSL">
-                                            <rect key="frame" x="0.0" y="0.0" width="333.5" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="330" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Low" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="i8H-lh-Afm">
-                                                    <rect key="frame" x="20" y="0.0" width="305.5" height="43.5"/>
+                                                    <rect key="frame" x="20" y="0.0" width="302" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -802,13 +805,10 @@
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="tableViewBackground">
-            <color red="0.94904834029999996" green="0.94862359760000003" blue="0.97047656770000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="secondarySystemBackgroundColor">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

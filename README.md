@@ -11,9 +11,6 @@ Adding task is as simple as ios native reminder app.
 
 ![](http://d.pr/i/RQEi+)
 
-####Setting priority
-
+### Dark Mode
 
 ![](http://d.pr/i/RQEi+)
-
-###Dark Mode
