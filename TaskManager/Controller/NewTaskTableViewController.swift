@@ -263,7 +263,6 @@ extension NewTaskTableViewController {
                 if row == 0 {
                     tableView.performBatchUpdates ({
                         self.isDateHidden = !isDateHidden
-                        self.dateCell.isHidden = isDateHidden
                     }, completion: nil)
                 } else if row == 2 {
                     tableView.performBatchUpdates ({
